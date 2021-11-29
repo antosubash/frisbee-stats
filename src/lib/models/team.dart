@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+part 'team.g.dart';
 
 @HiveType(typeId: 1)
 class Team extends HiveObject {
@@ -6,5 +7,7 @@ class Team extends HiveObject {
   String name;
   @HiveField(2)
   String description;
-  Team(this.name, this.description);
+  @HiveField(3)
+  DateTime createdAt;
+  Team(this.name, this.description, this.createdAt);
 }
