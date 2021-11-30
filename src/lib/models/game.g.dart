@@ -17,6 +17,7 @@ class GameAdapter extends TypeAdapter<Game> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Game(
+      fields[5] as String,
       fields[0] as String,
       fields[1] as String,
       fields[2] as Team,
@@ -28,7 +29,7 @@ class GameAdapter extends TypeAdapter<Game> {
   @override
   void write(BinaryWriter writer, Game obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class GameAdapter extends TypeAdapter<Game> {
       ..writeByte(3)
       ..write(obj.createdAt)
       ..writeByte(4)
-      ..write(obj.opponent);
+      ..write(obj.opponent)
+      ..writeByte(5)
+      ..write(obj.id);
   }
 
   @override

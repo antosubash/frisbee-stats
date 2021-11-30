@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:matchpoint/constants.dart';
 import 'package:matchpoint/models/game.dart';
 import 'package:matchpoint/models/team.dart';
+import 'package:uuid/uuid.dart';
 
 class AddGames extends StatefulWidget {
   const AddGames({Key? key}) : super(key: key);
@@ -31,6 +32,7 @@ class _AddGamesState extends State<AddGames> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Start Game'),
       ),
@@ -110,8 +112,8 @@ class _AddGamesState extends State<AddGames> {
     if (team == null || opponent == null) {
       return;
     }
-    var newGame = Game(_nameController.text, _descriptionController.text, team!,
-        DateTime.now(), opponent!);
+    var newGame = Game(const Uuid().v4(), _nameController.text,
+        _descriptionController.text, team!, DateTime.now(), opponent!);
     gameBox.add(newGame);
   }
 }

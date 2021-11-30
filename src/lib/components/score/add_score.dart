@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison
-
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropdown_alert/alert_controller.dart';
@@ -10,6 +8,7 @@ import 'package:matchpoint/models/game.dart';
 import 'package:matchpoint/models/score.dart';
 import 'package:matchpoint/models/starting.dart';
 import 'package:matchpoint/models/team.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../constants.dart';
 
@@ -22,11 +21,12 @@ class AddScore extends StatefulWidget {
 
 class _AddScoreState extends State<AddScore> {
   final _key = GlobalKey<FormState>();
-  late Team team;
-  late Starting starting;
-  late int block;
-  late int turnover;
+  late Team? team = null;
+  late Starting? starting = null;
+  late double block = 0;
+  late double turnover = 0;
   late final Box scoreBox;
+  var key = UniqueKey();
 
   @override
   void initState() {
@@ -53,6 +53,7 @@ class _AddScoreState extends State<AddScore> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
                 child: CustomRadioButton(
+                  key: ValueKey(starting),
                   padding: 8,
                   margin: const EdgeInsets.all(8.0),
                   width: MediaQuery.of(context).size.width * 0.4,
@@ -73,16 +74,17 @@ class _AddScoreState extends State<AddScore> {
                       starting = value as Starting;
                     });
                   },
+                  defaultSelected: starting,
                   selectedColor: Theme.of(context).primaryColor,
                 ),
               ),
               const Text("Blocks", style: TextStyle(fontSize: 20.0)),
               Padding(
                 child: SpinBox(
-                  value: 0,
+                  value: block,
                   onChanged: (value) {
                     setState(() {
-                      block = value.toInt();
+                      block = value;
                     });
                   },
                 ),
@@ -91,10 +93,10 @@ class _AddScoreState extends State<AddScore> {
               const Text("Turnovers", style: TextStyle(fontSize: 20.0)),
               Padding(
                 child: SpinBox(
-                  value: 0,
+                  value: turnover,
                   onChanged: (value) {
                     setState(() {
-                      turnover = value.toInt();
+                      turnover = value;
                     });
                   },
                 ),
@@ -105,6 +107,7 @@ class _AddScoreState extends State<AddScore> {
               ),
               const Text("Points", style: TextStyle(fontSize: 20.0)),
               CustomRadioButton(
+                key: ValueKey(team),
                 padding: 8,
                 margin: const EdgeInsets.all(8.0),
                 width: MediaQuery.of(context).size.width * 0.4,
@@ -125,12 +128,14 @@ class _AddScoreState extends State<AddScore> {
                     team = value as Team;
                   });
                 },
+                defaultSelected: team,
                 selectedColor: Theme.of(context).primaryColor,
               ),
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ElevatedButton(
+                  key: const Key('submit'),
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text('Submit', style: TextStyle(fontSize: 30)),
@@ -147,15 +152,13 @@ class _AddScoreState extends State<AddScore> {
 
   void _addScore() {
     try {
-      if (starting != null &&
-          team != null &&
-          block != null &&
-          turnover != null) {
+      if (starting != null && team != null && block > 0 && turnover > 0) {
         //Navigator.of(context).pop();
-        var score = Score(
-            1, DateTime.now(), turnover, block, starting, team, widget.game);
+        var score = Score(const Uuid().v4(), 1, DateTime.now(),
+            turnover.toInt(), block.toInt(), starting!, team!, widget.game);
         scoreBox.add(score);
         AlertController.show("Success", "Score saved!", TypeAlert.success);
+        _reset();
       } else {
         AlertController.show(
             "Error", "Please fill all the fields", TypeAlert.error);
@@ -164,5 +167,14 @@ class _AddScoreState extends State<AddScore> {
       AlertController.show(
           "Error", "Please fill all the fields", TypeAlert.error);
     }
+  }
+
+  void _reset() {
+    setState(() {
+      starting = null;
+      team = null;
+      block = 0;
+      turnover = 0;
+    });
   }
 }

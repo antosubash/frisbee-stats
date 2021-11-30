@@ -14,5 +14,8 @@ class Game extends HiveObject {
   DateTime createdAt;
   @HiveField(4)
   Team opponent;
-  Game(this.name, this.description, this.team, this.createdAt, this.opponent);
+  @HiveField(5)
+  String id;
+  Game(this.id, this.name, this.description, this.team, this.createdAt,
+      this.opponent);
 }

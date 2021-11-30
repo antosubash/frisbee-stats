@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:matchpoint/Constants.dart';
 import 'package:matchpoint/models/team.dart';
+import 'package:uuid/uuid.dart';
 
 class AddTeam extends StatefulWidget {
   const AddTeam({Key? key}) : super(key: key);
@@ -71,8 +72,8 @@ class _AddTeamState extends State<AddTeam> {
   }
 
   void _addTeams() {
-    var team =
-        Team(_nameController.text, _descriptionController.text, DateTime.now());
+    var team = Team(const Uuid().v4(), _nameController.text,
+        _descriptionController.text, DateTime.now());
     box.add(team);
   }
 }

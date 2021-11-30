@@ -21,7 +21,9 @@ class Score extends HiveObject {
   Team team;
   @HiveField(11)
   Game game;
+  @HiveField(12)
+  String id;
 
-  Score(this.score, this.createdAt, this.turnOver, this.block, this.starting,
-      this.team, this.game);
+  Score(this.id, this.score, this.createdAt, this.turnOver, this.block,
+      this.starting, this.team, this.game);
 }

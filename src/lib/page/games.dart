@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:matchpoint/Constants.dart';
 import 'package:matchpoint/components/game/add_games.dart';
+import 'package:matchpoint/components/game/view_game.dart';
 import 'package:matchpoint/components/score/add_score.dart';
 import 'package:matchpoint/models/game.dart';
 import 'package:matchpoint/models/team.dart';
@@ -55,7 +56,7 @@ class _GamesListState extends State<GamesList> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => AddScore(game: game!),
+                        builder: (context) => ViewGame(game: game!),
                       ),
                     );
                   },

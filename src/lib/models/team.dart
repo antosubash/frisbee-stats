@@ -9,5 +9,7 @@ class Team extends HiveObject {
   String description;
   @HiveField(3)
   DateTime createdAt;
-  Team(this.name, this.description, this.createdAt);
+  @HiveField(4)
+  String id;
+  Team(this.id, this.name, this.description, this.createdAt);
 }

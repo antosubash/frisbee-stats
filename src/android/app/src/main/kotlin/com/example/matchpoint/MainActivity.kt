@@ -1,4 +1,4 @@
-package com.example.matchpoint
+package com.antosubash.frisbeestats
 
 import io.flutter.embedding.android.FlutterActivity
 

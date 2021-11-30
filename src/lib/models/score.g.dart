@@ -17,6 +17,7 @@ class ScoreAdapter extends TypeAdapter<Score> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Score(
+      fields[12] as String,
       fields[0] as int,
       fields[6] as DateTime,
       fields[7] as int,
@@ -30,7 +31,7 @@ class ScoreAdapter extends TypeAdapter<Score> {
   @override
   void write(BinaryWriter writer, Score obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.score)
       ..writeByte(6)
@@ -44,7 +45,9 @@ class ScoreAdapter extends TypeAdapter<Score> {
       ..writeByte(10)
       ..write(obj.team)
       ..writeByte(11)
-      ..write(obj.game);
+      ..write(obj.game)
+      ..writeByte(12)
+      ..write(obj.id);
   }
 
   @override

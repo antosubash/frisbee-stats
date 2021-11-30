@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.matchpoint">
+    package="com.antosubash.frisbeestats">
    <application
-        android:label="matchpoint"
+        android:label="Frisbee Stats"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
