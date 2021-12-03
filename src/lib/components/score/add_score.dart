@@ -152,8 +152,7 @@ class _AddScoreState extends State<AddScore> {
 
   void _addScore() {
     try {
-      if (starting != null && team != null && block > 0 && turnover > 0) {
-        //Navigator.of(context).pop();
+      if (starting != null && team != null) {
         var score = Score(const Uuid().v4(), 1, DateTime.now(),
             turnover.toInt(), block.toInt(), starting!, team!, widget.game);
         scoreBox.add(score);

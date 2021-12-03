@@ -12,11 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    GamesList(),
-    TeamList(),
-    ScorePage(),
-  ];
+  static const List<Widget> _widgetOptions = <Widget>[TeamList(), GamesList()];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -33,20 +29,15 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.games),
-            label: 'Game',
-            backgroundColor: Colors.red,
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.group),
             label: 'Team',
             backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.score),
-            label: 'Score',
-            backgroundColor: Colors.purple,
-          ),
+            icon: Icon(Icons.games),
+            label: 'Game',
+            backgroundColor: Colors.red,
+          )
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],

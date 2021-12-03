@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:matchpoint/Constants.dart';
 import 'package:matchpoint/components/game/add_games.dart';
 import 'package:matchpoint/components/game/view_game.dart';
@@ -67,7 +68,23 @@ class _GamesListState extends State<GamesList> {
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [Text(game!.name), Text(game.description)],
+                          children: [
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    game!.name,
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                  Text(
+                                    DateFormat.yMMMd().format(game.createdAt),
+                                    style: Theme.of(context).textTheme.caption,
+                                  ),
+                                ]),
+                            Text(game.description)
+                          ],
                         ),
                       ),
                     ),
