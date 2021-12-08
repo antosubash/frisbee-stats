@@ -61,8 +61,8 @@ class _AddScoreState extends State<AddScore> {
                   elevation: 2,
                   unSelectedColor: Theme.of(context).canvasColor,
                   buttonLables: const [
-                    "Defence",
-                    "Offence",
+                    "Defense",
+                    "Offense",
                   ],
                   buttonValues: const [Starting.defence, Starting.offense],
                   buttonTextStyle: const ButtonTextStyle(

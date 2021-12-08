@@ -44,15 +44,19 @@ class _GamesListState extends State<GamesList> {
       body: ValueListenableBuilder(
         valueListenable: Hive.box<Game>(Constants.games).listenable(),
         builder: (context, Box<Game> box, _) {
+          final List<Game> games = box.values.toList()
+            ..sort((a, b) {
+              return b.createdAt.compareTo(a.createdAt);
+            });
           if (box.values.isEmpty) {
             return const Center(
               child: Text("No Games"),
             );
           }
           return ListView.builder(
-              itemCount: box.values.length,
+              itemCount: games.length,
               itemBuilder: (context, index) {
-                Game? game = box.getAt(index);
+                Game? game = games[index];
                 return InkWell(
                   onTap: () {
                     Navigator.of(context).push(

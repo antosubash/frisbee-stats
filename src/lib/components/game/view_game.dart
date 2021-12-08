@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dropdown_alert/alert_controller.dart';
+import 'package:flutter_dropdown_alert/model/data_alert.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:matchpoint/components/score/add_score.dart';
 import 'package:matchpoint/constants.dart';
@@ -8,7 +10,6 @@ import 'package:matchpoint/extension.dart';
 import 'package:matchpoint/models/game.dart';
 import 'package:matchpoint/models/score.dart';
 import 'package:matchpoint/models/starting.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:open_file/open_file.dart';
 
@@ -57,7 +58,12 @@ class _ViewGameState extends State<ViewGame> {
               child: FloatingActionButton(
                 heroTag: 'download',
                 onPressed: () async {
-                  await _createCSV();
+                  try {
+                    await _createCSV();
+                  } catch (e) {
+                    AlertController.show(
+                        'Error', e.toString(), TypeAlert.error);
+                  }
                 },
                 child: const Icon(Icons.file_download),
               ),
@@ -166,8 +172,8 @@ class _ViewGameState extends State<ViewGame> {
                         '  Turnovers: ' +
                         score.turnOver.toString()),
                     subtitle: Text((score.starting == Starting.defence
-                        ? 'Defence'
-                        : 'Offence')),
+                        ? 'Defense'
+                        : 'Offense')),
                     trailing: Text('Team: ' + score.team.name),
                   );
                 },
@@ -203,8 +209,6 @@ class _ViewGameState extends State<ViewGame> {
   }
 
   Future<void> _createCSV() async {
-    Directory? appDocDir = await getExternalStorageDirectory();
-    String? appDocPath = appDocDir?.path;
     var fileName = widget.game.createdAt.day.toString() +
         '_' +
         widget.game.createdAt.month.toString() +
@@ -215,7 +219,7 @@ class _ViewGameState extends State<ViewGame> {
         ".csv";
     if (await Permission.storage.request().isGranted) {
       // Either the permission was already granted before or the user just granted it.
-      final file = File('$appDocPath/$fileName');
+      final file = File('/storage/emulated/0/Download/$fileName');
       final score = Hive.box<Score>(Constants.scores);
       List<List<dynamic>> rows = [];
       List<dynamic> row = [];
@@ -226,7 +230,7 @@ class _ViewGameState extends State<ViewGame> {
       row.add("Starting");
       row.add("Blocks");
       row.add("Turnovers");
-      row.add("Winner");
+      row.add("Point");
       row.add("Created At");
       rows.add(row);
       for (var i = 0; i < score.length; i++) {
@@ -235,7 +239,7 @@ class _ViewGameState extends State<ViewGame> {
         row.add(widget.game.createdAt.toString());
         row.add(widget.game.team.name);
         row.add(widget.game.opponent.name);
-        row.add(score.getAt(i)!.starting.toString());
+        row.add(score.getAt(i)!.starting.toString().split('.').last);
         row.add(score.getAt(i)!.block.toString());
         row.add(score.getAt(i)!.turnOver.toString());
         row.add(score.getAt(i)!.team.name);
@@ -245,6 +249,8 @@ class _ViewGameState extends State<ViewGame> {
       String csv = const ListToCsvConverter().convert(rows);
       await file.writeAsString(csv);
       OpenFile.open(file.path, type: "text/csv");
+      AlertController.show("CSV file created",
+          "CSV file created at " + file.path, TypeAlert.success);
     }
   }
 }
